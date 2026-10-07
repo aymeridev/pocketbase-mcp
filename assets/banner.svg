@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-labelledby="title desc">
+  <title id="title">pocketbase-mcp</title>
+  <desc id="desc">Manage your PocketBase instance from Claude.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#ffffff" fill-opacity="0.12"/>
+    </pattern>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#2563eb" stop-opacity="1"/>
+      <stop offset="1" stop-color="#2563eb" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1280" height="320" rx="24" fill="url(#bg)"/>
+  <rect width="1280" height="320" rx="24" fill="url(#dots)"/>
+  <ellipse cx="640" cy="160" rx="520" ry="150" fill="url(#glow)"/>
+
+  <!-- Mark: a database -->
+  <g transform="translate(330 58)">
+    <rect width="88" height="88" rx="22" fill="#ffffff"/>
+    <g fill="none" stroke="#1d4ed8" stroke-width="5" stroke-linecap="round">
+      <ellipse cx="44" cy="28" rx="20" ry="7"/>
+      <path d="M24 28v32c0 4 9 7 20 7s20-3 20-7V28"/>
+      <path d="M24 44c0 4 9 7 20 7s20-3 20-7"/>
+    </g>
+  </g>
+
+  <g font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <text x="442" y="125" font-size="64" font-weight="700" fill="#ffffff" letter-spacing="-1.5">pocketbase<tspan fill-opacity="0.55">-</tspan>mcp</text>
+    <text x="640" y="196" font-size="26" font-weight="400" fill="#dbeafe" text-anchor="middle">Manage your PocketBase instance from Claude.</text>
+    <g font-size="15" font-weight="500" fill="#ffffff" text-anchor="middle">
+      <rect x="463" y="228" width="118" height="30" rx="15" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.3"/>
+      <text x="522" y="248">MCP server</text>
+      <rect x="593" y="228" width="160" height="30" rx="15" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.3"/>
+      <text x="673" y="248">PocketBase 0.23+</text>
+      <rect x="765" y="228" width="52" height="30" rx="15" fill="#ffffff" fill-opacity="0.14" stroke="#ffffff" stroke-opacity="0.3"/>
+      <text x="791" y="248">MIT</text>
+    </g>
+  </g>
+</svg>
