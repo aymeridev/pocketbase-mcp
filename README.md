@@ -77,7 +77,7 @@ Restart Claude Desktop. Ask *"Check my PocketBase health"* to verify the connect
 
 | Variable | Default | Description |
 | --- | --- | --- |
-| `PB_URL` | required | Base URL of the PocketBase instance |
+| `PB_URL` | required | Base URL of the PocketBase instance. Use the final URL (e.g. `https://`): redirects are followed, but cost an extra request at startup |
 | `PB_SUPERUSER_EMAIL` | | Superuser email |
 | `PB_SUPERUSER_PASSWORD` | | Superuser password |
 | `PB_SUPERUSER_TOKEN` | | Alternative to email/password: a superuser auth token (not refreshed) |
