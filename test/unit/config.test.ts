@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { homedir } from "node:os";
+import path from "node:path";
 import { loadConfig } from "../../src/config.js";
 
 describe("loadConfig", () => {
@@ -12,5 +14,11 @@ describe("loadConfig", () => {
     expect(config).toMatchObject({ url: "http://x", readOnly: false, requireConfirmation: true, confirmationTtlMs: 300_000 });
     const ro = loadConfig({ PB_URL: "http://x", PB_SUPERUSER_TOKEN: "t", PB_READ_ONLY: "true", PB_REQUIRE_CONFIRMATION: "false" });
     expect(ro).toMatchObject({ readOnly: true, requireConfirmation: false });
+  });
+
+  it("expands ~ in PB_FILES_DIR", () => {
+    const config = loadConfig({ PB_URL: "http://x", PB_SUPERUSER_TOKEN: "t", PB_FILES_DIR: "~/pb-files" });
+    expect(config.filesDir).toBe(path.join(homedir(), "pb-files"));
+    expect(loadConfig({ PB_URL: "http://x", PB_SUPERUSER_TOKEN: "t" }).filesDir).toMatch(/pocketbase-mcp$/);
   });
 });

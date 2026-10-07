@@ -1,3 +1,6 @@
+import { homedir } from "node:os";
+import path from "node:path";
+
 export interface Config {
   url: string;
   email?: string;
@@ -6,6 +9,11 @@ export interface Config {
   readOnly: boolean;
   requireConfirmation: boolean;
   confirmationTtlMs: number;
+  filesDir: string;
+}
+
+function expandHome(p: string): string {
+  return p === "~" || p.startsWith("~/") ? path.join(homedir(), p.slice(1)) : p;
 }
 
 function parseBool(value: string | undefined, fallback: boolean): boolean {
@@ -28,6 +36,8 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     );
   }
 
+  const filesDir = env.PB_FILES_DIR?.trim() || path.join(homedir(), "Downloads", "pocketbase-mcp");
+
   const ttlSeconds = Number(env.PB_CONFIRMATION_TTL_SECONDS ?? "300");
 
   return {
@@ -38,5 +48,6 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     readOnly: parseBool(env.PB_READ_ONLY, false),
     requireConfirmation: parseBool(env.PB_REQUIRE_CONFIRMATION, true),
     confirmationTtlMs: (Number.isFinite(ttlSeconds) && ttlSeconds > 0 ? ttlSeconds : 300) * 1000,
+    filesDir: path.resolve(expandHome(filesDir)),
   };
 }
