@@ -1,0 +1,46 @@
+{
+  "name": "pocketbase-mcp",
+  "version": "0.1.0",
+  "description": "MCP server that lets Claude (and other MCP clients) manage a self-hosted PocketBase instance",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "pocketbase-mcp": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run test/unit",
+    "test:integration": "vitest run test/integration",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "pocketbase",
+    "claude",
+    "model-context-protocol"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aymeridev/pocketbase-mcp.git"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "pocketbase": "^0.28.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.3"
+  }
+}
