@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="320" viewBox="0 0 1280 320" role="img" aria-labelledby="title desc">
+  <title id="title">pocketbase-mcp</title>
+  <desc id="desc">Manage your PocketBase instance from Claude and other MCP clients.</desc>
+  <defs>
+    <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#d9dce3"/>
+    </pattern>
+    <linearGradient id="fade" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#fafbfc" stop-opacity="1"/>
+      <stop offset="1" stop-color="#fafbfc" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="320" rx="24" fill="#fafbfc"/>
+  <rect x="840" y="0" width="440" height="320" fill="url(#dots)"/>
+  <rect x="840" y="0" width="300" height="320" fill="url(#fade)"/>
+  <rect x="0.5" y="0.5" width="1279" height="319" rx="23.5" fill="none" stroke="#e4e7ec"/>
+
+  <!-- Mark: a database -->
+  <g transform="translate(96 98)">
+    <rect width="112" height="112" rx="28" fill="#16161a"/>
+    <g fill="none" stroke="#fafbfc" stroke-width="6" stroke-linecap="round">
+      <ellipse cx="56" cy="36" rx="26" ry="9"/>
+      <path d="M30 36v40c0 5 11.6 9 26 9s26-4 26-9V36"/>
+      <path d="M30 56c0 5 11.6 9 26 9s26-4 26-9"/>
+    </g>
+  </g>
+
+  <g font-family="Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+    <text x="248" y="128" font-size="64" font-weight="700" fill="#16161a" letter-spacing="-1.5">pocketbase<tspan fill="#9aa1ad">-</tspan>mcp</text>
+    <text x="250" y="174" font-size="26" font-weight="400" fill="#5b6270">Manage your PocketBase instance from Claude.</text>
+    <g font-size="15" font-weight="500" fill="#5b6270">
+      <rect x="250" y="214" width="118" height="30" rx="15" fill="#ffffff" stroke="#e4e7ec"/>
+      <text x="309" y="234" text-anchor="middle">MCP server</text>
+      <rect x="380" y="214" width="160" height="30" rx="15" fill="#ffffff" stroke="#e4e7ec"/>
+      <text x="460" y="234" text-anchor="middle">PocketBase 0.23+</text>
+      <rect x="552" y="214" width="76" height="30" rx="15" fill="#ffffff" stroke="#e4e7ec"/>
+      <text x="590" y="234" text-anchor="middle">MIT</text>
+    </g>
+  </g>
+</svg>
