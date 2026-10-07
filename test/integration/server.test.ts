@@ -1,5 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+import { createServer as createHttpServer } from "node:http";
+import type { AddressInfo } from "node:net";
 import PocketBase from "pocketbase";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { loadConfig } from "../../src/config.js";
@@ -170,6 +172,29 @@ describe.skipIf(!url)("pocketbase-mcp against a live PocketBase", () => {
     expect(names).not.toContain("pb_batch");
     expect(tools.every((t) => t.annotations?.readOnlyHint)).toBe(true);
     await ro.client.close();
+  });
+
+  it("follows a cross-origin redirect on PB_URL without losing the auth header", async () => {
+    // Redirects every request to the same instance on another origin, like an http -> https redirect.
+    const target = new URL(url!);
+    target.hostname = target.hostname === "localhost" ? "127.0.0.1" : "localhost";
+    const proxy = createHttpServer((req, res) => {
+      res.writeHead(308, { location: `${target.origin}${req.url}` });
+      res.end();
+    });
+    await new Promise<void>((resolve) => proxy.listen(0, "127.0.0.1", resolve));
+    const port = (proxy.address() as AddressInfo).port;
+    try {
+      const redirected = await connect({ PB_URL: `http://127.0.0.1:${port}` });
+      const health = await redirected.call("pb_health");
+      expect(health.isError, JSON.stringify(health.body)).toBe(false);
+      expect(health.body.warning).toMatch(/redirects to/);
+      const list = await redirected.call("pb_list_collections");
+      expect(list.isError, JSON.stringify(list.body)).toBe(false);
+      await redirected.client.close();
+    } finally {
+      proxy.close();
+    }
   });
 
   it("marks destructive tools for the client", async () => {

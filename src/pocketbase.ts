@@ -8,6 +8,9 @@ import type { Config } from "./config.js";
 export class PocketBaseClient {
   readonly pb: PocketBase;
   private authPromise?: Promise<void>;
+  private resolvePromise?: Promise<void>;
+  /** Set when PB_URL redirects elsewhere (typically http -> https). */
+  redirectWarning?: string;
 
   constructor(private readonly config: Config) {
     this.pb = new PocketBase(config.url);
@@ -18,7 +21,25 @@ export class PocketBaseClient {
   }
 
   get baseUrl(): string {
-    return this.config.url;
+    return this.pb.baseURL;
+  }
+
+  /**
+   * Follows redirects on PB_URL once and talks to the final URL directly.
+   * fetch drops the Authorization header on cross-origin redirects (e.g. http -> https),
+   * which makes every authenticated request fail with 401 even though login succeeded.
+   */
+  private async resolveBaseUrl(): Promise<void> {
+    const response = await fetch(`${this.config.url}/api/health`);
+    const finalUrl = new URL(response.url);
+    finalUrl.pathname = finalUrl.pathname.replace(/\/api\/health\/?$/, "");
+    finalUrl.search = "";
+    const resolved = finalUrl.toString().replace(/\/+$/, "");
+    if (resolved !== this.config.url) {
+      this.pb.baseURL = resolved;
+      this.redirectWarning = `PB_URL ${this.config.url} redirects to ${resolved}; using ${resolved}. Update PB_URL to avoid the extra redirect.`;
+      console.error(`pocketbase-mcp: ${this.redirectWarning}`);
+    }
   }
 
   private async authenticate(): Promise<void> {
@@ -38,6 +59,11 @@ export class PocketBaseClient {
   }
 
   async ensureAuth(): Promise<void> {
+    this.resolvePromise ??= this.resolveBaseUrl().catch((err) => {
+      this.resolvePromise = undefined;
+      throw err;
+    });
+    await this.resolvePromise;
     if (this.pb.authStore.isValid) return;
     this.authPromise ??= this.authenticate().finally(() => {
       this.authPromise = undefined;
