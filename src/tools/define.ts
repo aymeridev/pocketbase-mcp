@@ -4,12 +4,19 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import type { CallToolResult } from "@modelcontextprotocol/sdk/types.js";
 import type { Config } from "../config.js";
 import type { ConfirmationStore } from "../confirmation.js";
+import type { FilesDir } from "../files.js";
 import type { PocketBaseClient } from "../pocketbase.js";
 
 export interface ToolContext {
   client: PocketBaseClient;
   config: Config;
   confirmations: ConfirmationStore;
+  files: FilesDir;
+}
+
+/** Returned by a tool's `run` to send MCP content (e.g. images) as is instead of JSON. */
+export class RawResult {
+  constructor(readonly result: CallToolResult) {}
 }
 
 /**
@@ -115,7 +122,8 @@ export function registerTools(server: McpServer, ctx: ToolContext, defs: ToolDef
             const problem = ctx.confirmations.consume(token, def.name, args);
             if (problem) return json({ error: problem }, true);
           }
-          return json(await def.run(args, ctx));
+          const output = await def.run(args, ctx);
+          return output instanceof RawResult ? output.result : json(output);
         } catch (err) {
           return formatError(err);
         }
